@@ -39,7 +39,8 @@ async function run() {
     const result = await axios.get(url, {
         params: {
             with_stats: true,
-            // since: '2021-01-01T00:00:00Z',
+            since: '2021-01-01T00:00:00Z',
+            per_page: 0,
             // all: true,
         }
     } )
@@ -52,13 +53,26 @@ async function run() {
 
     // we create the table if not existing
     modelInstance.sync()
+    modelInstance.destroy({
+        truncate: true,
+    })
 
     for (sourceData of result.data) {
         // console.log(sourceData)
         let destData = {}
         const mapping =  mappingConfig.entities[modelName].mapping
         // we map column names from source to destination
-        Object.keys(mapping).forEach(sourceColumn => destData[mapping[sourceColumn]] = sourceData[sourceColumn])
+        Object.keys(mapping).forEach((sourceColumn) => {
+            const sourceColumnTokens = sourceColumn.split('___')
+            // FIXME quick trick to get the attribute of an object by using three underscores
+            // console.log(sourceColumn)
+            if (sourceColumnTokens.length == 2) {
+                destData[mapping[sourceColumn]] = sourceData[sourceColumnTokens[0]][sourceColumnTokens[1]]
+            }
+            else {
+                destData[mapping[sourceColumn]] = sourceData[sourceColumn]
+            }
+        })
         // we store line into database
         modelInstance.create(destData)
     }

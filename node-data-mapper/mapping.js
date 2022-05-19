@@ -11,6 +11,9 @@ const config = {
                 },
                 shortId: DataTypes.STRING,
                 authorName: DataTypes.STRING,
+                additions: DataTypes.INTEGER,
+                deletions: DataTypes.INTEGER,
+                total: DataTypes.INTEGER,
                 // system attributes
                 // createdAt: DataTypes.DATE,
                 // updatedAt: DataTypes.DATE,
@@ -21,6 +24,9 @@ const config = {
                 short_id: 'shortId',
                 author_name: 'authorName',
                 created_at: 'createdAt',
+                stats___additions: 'additions',
+                stats___deletions: 'deletions',
+                stats___total: 'total',
             }
         }
     },
