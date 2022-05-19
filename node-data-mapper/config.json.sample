@@ -1,0 +1,10 @@
+{
+    "token": "to be set",
+    "source": {
+        "host": "localhost",
+        "dialect": "mysql",
+        "database": "superset",
+        "username": "superset",
+        "password": "superset"
+    }
+}

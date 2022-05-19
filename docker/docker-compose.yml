@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  superset-db:
+    image: mariadb:5.5.64
+    container_name: superset-db
+    hostname: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: superset
+      MYSQL_PASSWORD: superset
+      MYSQL_DATABASE: superset
+    ports:
+      - 3306:3306
+    volumes:
+      # - /etc/localtime:/etc/localtime:ro
+      - ./dump:/docker-entrypoint-initdb.d
+      # - ./data/magnus/mysql:/var/lib/mysql
+    networks:
+      - supersetnetwork
+
+  superset-pma:
+    image: phpmyadmin/phpmyadmin
+    container_name: superset-pma
+    hostname: pma
+    depends_on:
+      - superset-db
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: superset-db
+      PMA_USER: superset
+      PMA_PASSWORD: superset
+    networks:
+      - supersetnetwork
+    ports:
+      - 8082:80
+
+  superset-appli:
+    image: apache/superset
+    container_name: superset-appli
+    hostname: appli
+    ports:
+      - 8080:8088
+    networks:
+      - supersetnetwork
+
+networks:
+  supersetnetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.38.0.0/16
+
