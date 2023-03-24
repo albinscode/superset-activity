@@ -41,6 +41,9 @@ services:
     hostname: appli
     ports:
       - 8080:8088
+    volumes:
+      - ./superset/config.py:/app/superset/config.py
+      - ./superset/pythonpath:/app/pythonpath
     networks:
       - supersetnetwork
 

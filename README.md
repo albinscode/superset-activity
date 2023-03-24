@@ -2,6 +2,8 @@
 
 See for details: https://hub.docker.com/r/apache/superset
 
+And: https://github.com/apache/superset/tree/master/docker#readme
+
 But simply:
 
 ~~~
